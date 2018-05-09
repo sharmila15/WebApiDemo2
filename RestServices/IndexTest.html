@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="jquery-1.11.2.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#btnGetEmployee').click(function () {
+
+                var empId = $('#txtId').val();
+
+                $.ajax({
+                    url: 'api/Employee/GetAll',
+                   // data: { Id: empId },
+                    method: 'get',
+                    dataType: 'xml',
+                    success: function (data) {
+                        var jQueryXml = $(data);
+                        $('#txtFName').val(jQueryXml.find('FirstName').text());
+                        $('#txtLName').val(jQueryXml.find('LastName').text());
+                        $('#txtaddress').val(jQueryXml.find('address').text());
+                        $('#txtPhno').val(jQueryXml.find('phnNumber').text());
+                        $('#txtGender').val(jQueryXml.find('Gender').text());
+                    },
+                    error: function (err) {
+                        alert(err);
+                    }
+                });
+            });
+        });
+    </script>
+
+   
+</head>
+<body>
+    ID : <input id="txtId" type="text" style="width:100px" />
+    <input type="button" id="btnGetEmployee" value="Get Employee" />
+    <br /><br />
+    <table border="1" style="border-collapse:collapse">
+        <tr>
+            <td>FirstName</td>
+            <td><input id="txtFName" type="text" /></td>
+        </tr>
+        <tr>
+            <td>LastName</td>
+            <td><input id="txtLName" type="text" /></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td><input id="txtaddress" type="text" /></td>
+        </tr>
+        <tr>
+            <td>Phno</td>
+            <td><input id="txtPhno" type="text" /></td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td><input id="txtGender" type="text" /></td>
+        </tr>
+
+    </table>
+</body>
+</html>

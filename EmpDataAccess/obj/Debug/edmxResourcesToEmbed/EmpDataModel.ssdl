@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Associations">
+    <Key>
+      <PropertyRef Name="AssociationId" />
+    </Key>
+    <Property Name="AssociationId" Type="int" Nullable="false" />
+    <Property Name="EmpId" Type="int" Nullable="false" />
+    <Property Name="CustId" Type="int" Nullable="false" />
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="ProjId" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Customers">
+    <Key>
+      <PropertyRef Name="CustId" />
+    </Key>
+    <Property Name="CustId" Type="int" Nullable="false" />
+    <Property Name="CustName" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpId" />
+    </Key>
+    <Property Name="EmpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="EmpFn" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="EmpLn" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="EmpAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="EmpPhno" Type="nchar" MaxLength="10" Nullable="false" />
+    <Property Name="Gender" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'Company.dbo.IdPhn' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="IdPhn">
+    <Key>
+      <PropertyRef Name="EmpId" />
+      <PropertyRef Name="HomePhn" />
+    </Key>
+    <Property Name="EmpId" Type="int" Nullable="false" />
+    <Property Name="HomePhn" Type="nchar" MaxLength="10" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Projects">
+    <Key>
+      <PropertyRef Name="ProjId" />
+    </Key>
+    <Property Name="ProjId" Type="int" Nullable="false" />
+    <Property Name="ProjName" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Vendors">
+    <Key>
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="VendorId" Type="int" Nullable="false" />
+    <Property Name="VendorName" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Associations_Employee">
+    <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+    <End Role="Associations" Type="Self.Associations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustId" />
+      </Principal>
+      <Dependent Role="Associations">
+        <PropertyRef Name="CustId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Associations_Projects">
+    <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+    <End Role="Associations" Type="Self.Associations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="ProjId" />
+      </Principal>
+      <Dependent Role="Associations">
+        <PropertyRef Name="ProjId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Associations_Vendors">
+    <End Role="Vendors" Type="Self.Vendors" Multiplicity="1" />
+    <End Role="Associations" Type="Self.Associations" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="Associations">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="spAddEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="EmpFn" Type="varchar" Mode="In" />
+    <Parameter Name="EmpLn" Type="varchar" Mode="In" />
+    <Parameter Name="EmpAddress" Type="nchar" Mode="In" />
+    <Parameter Name="EmpPhno" Type="varchar" Mode="In" />
+    <Parameter Name="Gender" Type="varchar" Mode="In" />
+    <Parameter Name="EmpId" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="spAddIdPhn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="EmpId" Type="int" Mode="In" />
+    <Parameter Name="HomePhn" Type="nchar" Mode="In" />
+  </Function>
+  <Function Name="spGetCountByGender" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="gend" Type="varchar" Mode="In" />
+    <Parameter Name="empcount" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="spGetEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <Function Name="spGetEmployeesByLastName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="lname" Type="nvarchar" Mode="In" />
+  </Function>
+  <EntityContainer Name="CompanyModelStoreContainer">
+    <EntitySet Name="Associations" EntityType="Self.Associations" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="IdPhn" EntityType="Self.IdPhn" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [IdPhn].[EmpId] AS [EmpId], 
+    [IdPhn].[HomePhn] AS [HomePhn]
+    FROM [dbo].[IdPhn] AS [IdPhn]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Associations_Employee" Association="Self.FK_Associations_Employee">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Associations" EntitySet="Associations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Associations_Projects" Association="Self.FK_Associations_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="Associations" EntitySet="Associations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Associations_Vendors" Association="Self.FK_Associations_Vendors">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Associations" EntitySet="Associations" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Employee App</title>
+</head>
+<body>
+
+    <div>
+        <h2>All Employees</h2>
+        <table border="1" id="tableMessage">
+            <tr>
+                <th>Id</th>
+                <th>FirstName</th>
+                <th>LastName</th>
+                <th>Address</th>
+                <th>PhoneNumber</th>
+                <th>Gender</th>
+
+            </tr>
+            
+        </table>
+        
+        <!--<ul id="employees" />-->
+    </div>
+    
+    <script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-2.0.3.min.js"></script>
+    <script>
+    var uri = 'api/Employee/GetAll';
+
+    $(document).ready(function () {
+      // Send an AJAX request
+      $.getJSON(uri)
+          .done(function (data) {
+              //var tr;
+              //tr = $('#tableMessage');
+              var table = $('#tableMessage');
+              var tb = $('#tbl');
+              //$.each(data, function (key, item) {
+              for (var i = 0; i < data.length; i++)
+              {
+                  table.append("<tr>" +
+                      "<td>" + '<a href="api/Employee/GetById'+'/' + data[i].Id+ '">'+data[i].Id+"</a>"+  "</td>" +
+                      "<td>" + data[i].FirstName + "</td>" +
+                      "<td>" + data[i].LastName + "</td>" +
+                      "<td>" + data[i].address + "</td>" +
+                      "<td>" + data[i].phnNumber + "</td>" +
+                      "<td>" + data[i].Gender + "</td>" +
+                      "<tr/>");
+                     
+                  
+
+                      //$('#tableMessage').append(tr);
+                      
+                      
+                      
+                      
+                      
+                  }
+              //$('<li>', { text: formatItem(item) }).appendTo($('#employees'));
+            //});
+          });
+    });
+    
+    //function formatItem(item) {
+    //    return item.Id + ',' + item.FirstName + ',' + item.LastName + ',' + item.address + ',' + item.phnNumber + ',' + item.Gender;
+    //}
+
+    
+    </script>
+</body>
+</html>

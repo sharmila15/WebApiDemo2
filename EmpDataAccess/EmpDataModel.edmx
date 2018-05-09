@@ -1,0 +1,397 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CompanyModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Associations">
+          <Key>
+            <PropertyRef Name="AssociationId" />
+          </Key>
+          <Property Name="AssociationId" Type="int" Nullable="false" />
+          <Property Name="EmpId" Type="int" Nullable="false" />
+          <Property Name="CustId" Type="int" Nullable="false" />
+          <Property Name="VendorId" Type="int" Nullable="false" />
+          <Property Name="ProjId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customers">
+          <Key>
+            <PropertyRef Name="CustId" />
+          </Key>
+          <Property Name="CustId" Type="int" Nullable="false" />
+          <Property Name="CustName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EmpFn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmpLn" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmpAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmpPhno" Type="nchar" MaxLength="10" Nullable="false" />
+          <Property Name="Gender" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'Company.dbo.IdPhn' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="IdPhn">
+          <Key>
+            <PropertyRef Name="EmpId" />
+            <PropertyRef Name="HomePhn" />
+          </Key>
+          <Property Name="EmpId" Type="int" Nullable="false" />
+          <Property Name="HomePhn" Type="nchar" MaxLength="10" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Projects">
+          <Key>
+            <PropertyRef Name="ProjId" />
+          </Key>
+          <Property Name="ProjId" Type="int" Nullable="false" />
+          <Property Name="ProjName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Vendors">
+          <Key>
+            <PropertyRef Name="VendorId" />
+          </Key>
+          <Property Name="VendorId" Type="int" Nullable="false" />
+          <Property Name="VendorName" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Associations_Employee">
+          <End Role="Customers" Type="Self.Customers" Multiplicity="1" />
+          <End Role="Associations" Type="Self.Associations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="Associations">
+              <PropertyRef Name="CustId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Associations_Projects">
+          <End Role="Projects" Type="Self.Projects" Multiplicity="1" />
+          <End Role="Associations" Type="Self.Associations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjId" />
+            </Principal>
+            <Dependent Role="Associations">
+              <PropertyRef Name="ProjId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Associations_Vendors">
+          <End Role="Vendors" Type="Self.Vendors" Multiplicity="1" />
+          <End Role="Associations" Type="Self.Associations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendors">
+              <PropertyRef Name="VendorId" />
+            </Principal>
+            <Dependent Role="Associations">
+              <PropertyRef Name="VendorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="spAddEmployee" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmpFn" Type="varchar" Mode="In" />
+          <Parameter Name="EmpLn" Type="varchar" Mode="In" />
+          <Parameter Name="EmpAddress" Type="nchar" Mode="In" />
+          <Parameter Name="EmpPhno" Type="varchar" Mode="In" />
+          <Parameter Name="Gender" Type="varchar" Mode="In" />
+          <Parameter Name="EmpId" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="spAddIdPhn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmpId" Type="int" Mode="In" />
+          <Parameter Name="HomePhn" Type="nchar" Mode="In" />
+        </Function>
+        <Function Name="spGetCountByGender" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="gend" Type="varchar" Mode="In" />
+          <Parameter Name="empcount" Type="int" Mode="InOut" />
+        </Function>
+        <Function Name="spGetEmployees" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="spGetEmployeesByLastName" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="lname" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CompanyModelStoreContainer">
+          <EntitySet Name="Associations" EntityType="Self.Associations" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customers" EntityType="Self.Customers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Projects" EntityType="Self.Projects" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IdPhn" EntityType="Self.IdPhn" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [IdPhn].[EmpId] AS [EmpId], 
+    [IdPhn].[HomePhn] AS [HomePhn]
+    FROM [dbo].[IdPhn] AS [IdPhn]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Associations_Employee" Association="Self.FK_Associations_Employee">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Associations" EntitySet="Associations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Associations_Projects" Association="Self.FK_Associations_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Associations" EntitySet="Associations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Associations_Vendors" Association="Self.FK_Associations_Vendors">
+            <End Role="Vendors" EntitySet="Vendors" />
+            <End Role="Associations" EntitySet="Associations" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Association">
+          <Key>
+            <PropertyRef Name="AssociationId" />
+          </Key>
+          <Property Name="AssociationId" Type="Int32" Nullable="false" />
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="VendorId" Type="Int32" Nullable="false" />
+          <Property Name="ProjId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Customer" Relationship="Self.FK_Associations_Employee" FromRole="Associations" ToRole="Customers" />
+          <NavigationProperty Name="Project" Relationship="Self.FK_Associations_Projects" FromRole="Associations" ToRole="Projects" />
+          <NavigationProperty Name="Vendor" Relationship="Self.FK_Associations_Vendors" FromRole="Associations" ToRole="Vendors" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustId" />
+          </Key>
+          <Property Name="CustId" Type="Int32" Nullable="false" />
+          <Property Name="CustName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Associations" Relationship="Self.FK_Associations_Employee" FromRole="Customers" ToRole="Associations" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmpId" />
+          </Key>
+          <Property Name="EmpId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EmpFn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpLn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmpPhno" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Project">
+          <Key>
+            <PropertyRef Name="ProjId" />
+          </Key>
+          <Property Name="ProjId" Type="Int32" Nullable="false" />
+          <Property Name="ProjName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Associations" Relationship="Self.FK_Associations_Projects" FromRole="Projects" ToRole="Associations" />
+        </EntityType>
+        <EntityType Name="Vendor">
+          <Key>
+            <PropertyRef Name="VendorId" />
+          </Key>
+          <Property Name="VendorId" Type="Int32" Nullable="false" />
+          <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Associations" Relationship="Self.FK_Associations_Vendors" FromRole="Vendors" ToRole="Associations" />
+        </EntityType>
+        <EntityType Name="IdPhn">
+          <Key>
+            <PropertyRef Name="EmpId" />
+            <PropertyRef Name="HomePhn" />
+          </Key>
+          <Property Name="EmpId" Type="Int32" Nullable="false" />
+          <Property Name="HomePhn" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Associations_Employee">
+          <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
+          <End Role="Associations" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customers">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="Associations">
+              <PropertyRef Name="CustId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Associations_Projects">
+          <End Role="Projects" Type="Self.Project" Multiplicity="1" />
+          <End Role="Associations" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Projects">
+              <PropertyRef Name="ProjId" />
+            </Principal>
+            <Dependent Role="Associations">
+              <PropertyRef Name="ProjId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Associations_Vendors">
+          <End Role="Vendors" Type="Self.Vendor" Multiplicity="1" />
+          <End Role="Associations" Type="Self.Association" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Vendors">
+              <PropertyRef Name="VendorId" />
+            </Principal>
+            <Dependent Role="Associations">
+              <PropertyRef Name="VendorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CompanyEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Associations" EntityType="Self.Association" />
+          <EntitySet Name="Customers" EntityType="Self.Customer" />
+          <EntitySet Name="Employees" EntityType="Self.Employee" />
+          <EntitySet Name="Projects" EntityType="Self.Project" />
+          <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+          <EntitySet Name="IdPhns" EntityType="Self.IdPhn" />
+          <AssociationSet Name="FK_Associations_Employee" Association="Self.FK_Associations_Employee">
+            <End Role="Customers" EntitySet="Customers" />
+            <End Role="Associations" EntitySet="Associations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Associations_Projects" Association="Self.FK_Associations_Projects">
+            <End Role="Projects" EntitySet="Projects" />
+            <End Role="Associations" EntitySet="Associations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Associations_Vendors" Association="Self.FK_Associations_Vendors">
+            <End Role="Vendors" EntitySet="Vendors" />
+            <End Role="Associations" EntitySet="Associations" />
+          </AssociationSet>
+          <FunctionImport Name="spAddEmployee">
+            <Parameter Name="EmpFn" Mode="In" Type="String" />
+            <Parameter Name="EmpLn" Mode="In" Type="String" />
+            <Parameter Name="EmpAddress" Mode="In" Type="String" />
+            <Parameter Name="EmpPhno" Mode="In" Type="String" />
+            <Parameter Name="Gender" Mode="In" Type="String" />
+            <Parameter Name="EmpId" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spAddIdPhn">
+            <Parameter Name="EmpId" Mode="In" Type="Int32" />
+            <Parameter Name="HomePhn" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="spGetCountByGender">
+            <Parameter Name="gend" Mode="In" Type="String" />
+            <Parameter Name="empcount" Mode="InOut" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="spGetEmployees" ReturnType="Collection(CompanyModel.spGetEmployees_Result)" />
+          <FunctionImport Name="spGetEmployeesByLastName" ReturnType="Collection(CompanyModel.spGetEmployeesByLastName_Result)">
+            <Parameter Name="lname" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="spGetEmployees_Result">
+          <Property Type="String" Name="EmpFn" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="VendorName" Nullable="false" MaxLength="50" />
+        </ComplexType>
+        <ComplexType Name="spGetEmployeesByLastName_Result">
+          <Property Type="Int32" Name="EmpId" Nullable="false" />
+          <Property Type="String" Name="EmpFn" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="EmpLn" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="EmpAddress" Nullable="false" MaxLength="50" />
+          <Property Type="String" Name="EmpPhno" Nullable="false" MaxLength="10" />
+          <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CompanyModelStoreContainer" CdmEntityContainer="CompanyEntities">
+          <EntitySetMapping Name="Associations">
+            <EntityTypeMapping TypeName="CompanyModel.Association">
+              <MappingFragment StoreEntitySet="Associations">
+                <ScalarProperty Name="AssociationId" ColumnName="AssociationId" />
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="ProjId" ColumnName="ProjId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="CompanyModel.Customer">
+              <MappingFragment StoreEntitySet="Customers">
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+                <ScalarProperty Name="CustName" ColumnName="CustName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="CompanyModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmpFn" ColumnName="EmpFn" />
+                <ScalarProperty Name="EmpLn" ColumnName="EmpLn" />
+                <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+                <ScalarProperty Name="EmpPhno" ColumnName="EmpPhno" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Projects">
+            <EntityTypeMapping TypeName="CompanyModel.Project">
+              <MappingFragment StoreEntitySet="Projects">
+                <ScalarProperty Name="ProjId" ColumnName="ProjId" />
+                <ScalarProperty Name="ProjName" ColumnName="ProjName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Vendors">
+            <EntityTypeMapping TypeName="CompanyModel.Vendor">
+              <MappingFragment StoreEntitySet="Vendors">
+                <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IdPhns">
+            <EntityTypeMapping TypeName="CompanyModel.IdPhn">
+              <MappingFragment StoreEntitySet="IdPhn">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="HomePhn" ColumnName="HomePhn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="spAddEmployee" FunctionName="CompanyModel.Store.spAddEmployee" />
+          <FunctionImportMapping FunctionImportName="spAddIdPhn" FunctionName="CompanyModel.Store.spAddIdPhn" />
+          <FunctionImportMapping FunctionImportName="spGetCountByGender" FunctionName="CompanyModel.Store.spGetCountByGender" />
+          <FunctionImportMapping FunctionImportName="spGetEmployees" FunctionName="CompanyModel.Store.spGetEmployees">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompanyModel.spGetEmployees_Result">
+                <ScalarProperty Name="EmpFn" ColumnName="EmpFn" />
+                <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="spGetEmployeesByLastName" FunctionName="CompanyModel.Store.spGetEmployeesByLastName">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="CompanyModel.spGetEmployeesByLastName_Result">
+                <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+                <ScalarProperty Name="EmpFn" ColumnName="EmpFn" />
+                <ScalarProperty Name="EmpLn" ColumnName="EmpLn" />
+                <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+                <ScalarProperty Name="EmpPhno" ColumnName="EmpPhno" />
+                <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

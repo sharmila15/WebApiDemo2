@@ -1,0 +1,147 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="CompanyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Association">
+    <Key>
+      <PropertyRef Name="AssociationId" />
+    </Key>
+    <Property Name="AssociationId" Type="Int32" Nullable="false" />
+    <Property Name="EmpId" Type="Int32" Nullable="false" />
+    <Property Name="CustId" Type="Int32" Nullable="false" />
+    <Property Name="VendorId" Type="Int32" Nullable="false" />
+    <Property Name="ProjId" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Customer" Relationship="Self.FK_Associations_Employee" FromRole="Associations" ToRole="Customers" />
+    <NavigationProperty Name="Project" Relationship="Self.FK_Associations_Projects" FromRole="Associations" ToRole="Projects" />
+    <NavigationProperty Name="Vendor" Relationship="Self.FK_Associations_Vendors" FromRole="Associations" ToRole="Vendors" />
+  </EntityType>
+  <EntityType Name="Customer">
+    <Key>
+      <PropertyRef Name="CustId" />
+    </Key>
+    <Property Name="CustId" Type="Int32" Nullable="false" />
+    <Property Name="CustName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <NavigationProperty Name="Associations" Relationship="Self.FK_Associations_Employee" FromRole="Customers" ToRole="Associations" />
+  </EntityType>
+  <EntityType Name="Employee">
+    <Key>
+      <PropertyRef Name="EmpId" />
+    </Key>
+    <Property Name="EmpId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="EmpFn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EmpLn" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EmpAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="EmpPhno" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Project">
+    <Key>
+      <PropertyRef Name="ProjId" />
+    </Key>
+    <Property Name="ProjId" Type="Int32" Nullable="false" />
+    <Property Name="ProjName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Associations" Relationship="Self.FK_Associations_Projects" FromRole="Projects" ToRole="Associations" />
+  </EntityType>
+  <EntityType Name="Vendor">
+    <Key>
+      <PropertyRef Name="VendorId" />
+    </Key>
+    <Property Name="VendorId" Type="Int32" Nullable="false" />
+    <Property Name="VendorName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="Associations" Relationship="Self.FK_Associations_Vendors" FromRole="Vendors" ToRole="Associations" />
+  </EntityType>
+  <EntityType Name="IdPhn">
+    <Key>
+      <PropertyRef Name="EmpId" />
+      <PropertyRef Name="HomePhn" />
+    </Key>
+    <Property Name="EmpId" Type="Int32" Nullable="false" />
+    <Property Name="HomePhn" Type="String" MaxLength="10" FixedLength="true" Unicode="true" Nullable="false" />
+  </EntityType>
+  <Association Name="FK_Associations_Employee">
+    <End Role="Customers" Type="Self.Customer" Multiplicity="1" />
+    <End Role="Associations" Type="Self.Association" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Customers">
+        <PropertyRef Name="CustId" />
+      </Principal>
+      <Dependent Role="Associations">
+        <PropertyRef Name="CustId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Associations_Projects">
+    <End Role="Projects" Type="Self.Project" Multiplicity="1" />
+    <End Role="Associations" Type="Self.Association" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Projects">
+        <PropertyRef Name="ProjId" />
+      </Principal>
+      <Dependent Role="Associations">
+        <PropertyRef Name="ProjId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Associations_Vendors">
+    <End Role="Vendors" Type="Self.Vendor" Multiplicity="1" />
+    <End Role="Associations" Type="Self.Association" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Vendors">
+        <PropertyRef Name="VendorId" />
+      </Principal>
+      <Dependent Role="Associations">
+        <PropertyRef Name="VendorId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="CompanyEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Associations" EntityType="Self.Association" />
+    <EntitySet Name="Customers" EntityType="Self.Customer" />
+    <EntitySet Name="Employees" EntityType="Self.Employee" />
+    <EntitySet Name="Projects" EntityType="Self.Project" />
+    <EntitySet Name="Vendors" EntityType="Self.Vendor" />
+    <EntitySet Name="IdPhns" EntityType="Self.IdPhn" />
+    <AssociationSet Name="FK_Associations_Employee" Association="Self.FK_Associations_Employee">
+      <End Role="Customers" EntitySet="Customers" />
+      <End Role="Associations" EntitySet="Associations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Associations_Projects" Association="Self.FK_Associations_Projects">
+      <End Role="Projects" EntitySet="Projects" />
+      <End Role="Associations" EntitySet="Associations" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Associations_Vendors" Association="Self.FK_Associations_Vendors">
+      <End Role="Vendors" EntitySet="Vendors" />
+      <End Role="Associations" EntitySet="Associations" />
+    </AssociationSet>
+    <FunctionImport Name="spAddEmployee">
+      <Parameter Name="EmpFn" Mode="In" Type="String" />
+      <Parameter Name="EmpLn" Mode="In" Type="String" />
+      <Parameter Name="EmpAddress" Mode="In" Type="String" />
+      <Parameter Name="EmpPhno" Mode="In" Type="String" />
+      <Parameter Name="Gender" Mode="In" Type="String" />
+      <Parameter Name="EmpId" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spAddIdPhn">
+      <Parameter Name="EmpId" Mode="In" Type="Int32" />
+      <Parameter Name="HomePhn" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="spGetCountByGender">
+      <Parameter Name="gend" Mode="In" Type="String" />
+      <Parameter Name="empcount" Mode="InOut" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="spGetEmployees" ReturnType="Collection(CompanyModel.spGetEmployees_Result)" />
+    <FunctionImport Name="spGetEmployeesByLastName" ReturnType="Collection(CompanyModel.spGetEmployeesByLastName_Result)">
+      <Parameter Name="lname" Mode="In" Type="String" />
+    </FunctionImport>
+  </EntityContainer>
+  <ComplexType Name="spGetEmployees_Result">
+    <Property Type="String" Name="EmpFn" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="VendorName" Nullable="false" MaxLength="50" />
+  </ComplexType>
+  <ComplexType Name="spGetEmployeesByLastName_Result">
+    <Property Type="Int32" Name="EmpId" Nullable="false" />
+    <Property Type="String" Name="EmpFn" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="EmpLn" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="EmpAddress" Nullable="false" MaxLength="50" />
+    <Property Type="String" Name="EmpPhno" Nullable="false" MaxLength="10" />
+    <Property Type="String" Name="Gender" Nullable="false" MaxLength="50" />
+  </ComplexType>
+</Schema>

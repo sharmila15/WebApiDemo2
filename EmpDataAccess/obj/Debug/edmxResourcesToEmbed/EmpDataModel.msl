@@ -1,0 +1,83 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="CompanyModelStoreContainer" CdmEntityContainer="CompanyEntities">
+    <EntitySetMapping Name="Associations">
+      <EntityTypeMapping TypeName="CompanyModel.Association">
+        <MappingFragment StoreEntitySet="Associations">
+          <ScalarProperty Name="AssociationId" ColumnName="AssociationId" />
+          <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <ScalarProperty Name="CustId" ColumnName="CustId" />
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="ProjId" ColumnName="ProjId" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Customers">
+      <EntityTypeMapping TypeName="CompanyModel.Customer">
+        <MappingFragment StoreEntitySet="Customers">
+          <ScalarProperty Name="CustId" ColumnName="CustId" />
+          <ScalarProperty Name="CustName" ColumnName="CustName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Employees">
+      <EntityTypeMapping TypeName="CompanyModel.Employee">
+        <MappingFragment StoreEntitySet="Employee">
+          <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <ScalarProperty Name="EmpFn" ColumnName="EmpFn" />
+          <ScalarProperty Name="EmpLn" ColumnName="EmpLn" />
+          <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+          <ScalarProperty Name="EmpPhno" ColumnName="EmpPhno" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Projects">
+      <EntityTypeMapping TypeName="CompanyModel.Project">
+        <MappingFragment StoreEntitySet="Projects">
+          <ScalarProperty Name="ProjId" ColumnName="ProjId" />
+          <ScalarProperty Name="ProjName" ColumnName="ProjName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Vendors">
+      <EntityTypeMapping TypeName="CompanyModel.Vendor">
+        <MappingFragment StoreEntitySet="Vendors">
+          <ScalarProperty Name="VendorId" ColumnName="VendorId" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="IdPhns">
+      <EntityTypeMapping TypeName="CompanyModel.IdPhn">
+        <MappingFragment StoreEntitySet="IdPhn">
+          <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <ScalarProperty Name="HomePhn" ColumnName="HomePhn" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="spAddEmployee" FunctionName="CompanyModel.Store.spAddEmployee" />
+    <FunctionImportMapping FunctionImportName="spAddIdPhn" FunctionName="CompanyModel.Store.spAddIdPhn" />
+    <FunctionImportMapping FunctionImportName="spGetCountByGender" FunctionName="CompanyModel.Store.spGetCountByGender" />
+    <FunctionImportMapping FunctionImportName="spGetEmployees" FunctionName="CompanyModel.Store.spGetEmployees">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CompanyModel.spGetEmployees_Result">
+          <ScalarProperty Name="EmpFn" ColumnName="EmpFn" />
+          <ScalarProperty Name="VendorName" ColumnName="VendorName" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="spGetEmployeesByLastName" FunctionName="CompanyModel.Store.spGetEmployeesByLastName">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="CompanyModel.spGetEmployeesByLastName_Result">
+          <ScalarProperty Name="EmpId" ColumnName="EmpId" />
+          <ScalarProperty Name="EmpFn" ColumnName="EmpFn" />
+          <ScalarProperty Name="EmpLn" ColumnName="EmpLn" />
+          <ScalarProperty Name="EmpAddress" ColumnName="EmpAddress" />
+          <ScalarProperty Name="EmpPhno" ColumnName="EmpPhno" />
+          <ScalarProperty Name="Gender" ColumnName="Gender" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+  </EntityContainerMapping>
+</Mapping>

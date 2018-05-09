@@ -1,0 +1,10 @@
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EmpDataAccess.dll.config
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EmpDataAccess.dll
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EmpDataAccess.pdb
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EntityFramework.dll
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EntityFramework.SqlServer.dll
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EntityFramework.xml
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\bin\Debug\EntityFramework.SqlServer.xml
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\obj\Debug\EmpDataAccess.csprojResolveAssemblyReference.cache
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\obj\Debug\EmpDataAccess.dll
+c:\users\shammi\documents\visual studio 2015\Projects\WebApiDemo2\EmpDataAccess\obj\Debug\EmpDataAccess.pdb
